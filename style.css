@@ -308,6 +308,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  margin-bottom: 30px;
 }
 
 #demo h1 {
