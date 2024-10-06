@@ -83,7 +83,7 @@ async function loadStars() {
   const planet = urlParams.get("planet");
   const mag = urlParams.get("mag") || 7;
   const response = await fetch(
-    `http://127.0.0.1:5000/stars?planet=${planet}&mag=${mag}`
+    `https://stellar-gaze.onrender.com/stars?planet=${planet}&mag=${mag}`
   );
   starsData = await response.json();
 }
