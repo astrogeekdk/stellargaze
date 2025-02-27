@@ -1,6 +1,6 @@
 # Stellargaze - Exoplanet Night Sky Simulator
 
-Created in the NASA Space Apps PS - "Exosky", where we had to simluate how the night sky would look like from different exoplanets!
+Created for NASA Space Apps PS - "Exosky", where we had to simulate how the night sky would look like from different exoplanets!
 
 This is an interactive 3D planetarium built using Three.js. Backend is written in Python Django. The star dataset is from the Hipparcos catalog and exoplanets from NASA Exoplanet Archive.
 
