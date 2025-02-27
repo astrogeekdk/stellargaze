@@ -46,7 +46,7 @@ This is an interactive 3D planetarium built using Three.js. Backend is written i
 - Launch the app and select an exoplanet from the list, or input your own exoplanet data.
 - Explore the 3D starfield, zoom, and pan to view the sky.
 - Use the key 'c' and then click two points to draw a constellation line!
-- Hit the camera iconto capture your view.
+- Hit the camera icon to capture your view.
 - Change ambient lighting and limiting magnitude of stars using the sliders.
 - Use the trash icon to remove custom constellations.
 - Toggle the Earth icon to show/hide the ground!
