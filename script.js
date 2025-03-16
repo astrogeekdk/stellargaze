@@ -1,5 +1,8 @@
-import * as THREE from "three";
-import { OrbitControls } from "OrbitControls";
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 
 const scene = new THREE.Scene();
@@ -49,7 +52,7 @@ function updateColor(lightness) {
 const magSlider = document.getElementById("magSlider");
 magSlider.addEventListener("input", (event) => {
   var userMag = event.target.value;
-  stars.forEach(([star, app_mag]) => {
+  stars.forEach(([star, HIP, ra, dec, dist, app_mag]) => {
     if (app_mag > userMag) {
       star.visible = false;
     } else if (app_mag <= userMag) {
@@ -79,7 +82,8 @@ async function loadStars() {
   const planet = urlParams.get("planet");
   const mag = urlParams.get("mag") || 7;
   const response = await fetch(
-    `https://stellar-gaze.onrender.com/stars?planet=${planet}&mag=${mag}`
+    // `https://stellar-gaze.onrender.com/stars?planet=${planet}&mag=${mag}`
+    `http://127.0.0.1:5000/stars?planet=${planet}&mag=${mag}`
   );
   starsData = await response.json();
 }
@@ -89,7 +93,7 @@ function renderStars() {
   const minMag = Math.min(...magnitudes);
   const maxMag = Math.max(...magnitudes);
 
-  starsData.forEach(({ ra, dec, dist, app_mag, SpType }) => {
+  starsData.forEach(({ HIP, ra, dec, dist, app_mag, SpType }) => {
     const star = createStar(ra, dec, dist, app_mag, minMag, maxMag, SpType);
     scene.add(star);
 
@@ -103,7 +107,7 @@ function renderStars() {
       belowHorizonStars.push([star, app_mag]);
       star.visible = false;
     } else {
-      stars.push([star, app_mag]);
+      stars.push([star, HIP, ra, dec, dist, app_mag]);
     }
   });
 
@@ -126,7 +130,7 @@ function createStar(ra, dec, dist, mag, minMag, maxMag, SpType, belowGround) {
   const material = new THREE.MeshStandardMaterial({
     emissive: color,
     emissiveIntensity: 1,
-    color: 0x000000, 
+    // color: 0x000000, 
   });
 
   const star = new THREE.Mesh(geometry, material);
@@ -199,6 +203,41 @@ function mapMagnitudeToRadius(mag, minMag, maxMag, scaleFactor = 2) {
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+
+
+window.addEventListener('mousemove', (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(stars.map(([star3d]) => star3d));
+
+  if (intersects.length > 0) {
+
+    const hoveredStar = intersects[0].object;
+    const starData = stars.find(([star3d]) => star3d === hoveredStar);
+    const [_, HIP, ra, dec, dist, app_mag] = starData; 
+
+    tooltip.style.display = 'block';
+    tooltip.innerHTML = `
+    HIP Catalog: ${HIP}<br>
+    Apparent Magnitude: ${app_mag.toFixed(2)}<br>
+    RA: ${ra.toFixed(2)}<br>
+    Dec: ${dec.toFixed(2)}<br>
+    Distance: ${dist.toFixed(2)} parsec<br>
+  `;
+      tooltip.style.left = `${event.clientX + 10}px`;
+    tooltip.style.top = `${event.clientY + 10}px`;
+
+  } else {
+    tooltip.style.display = 'none';
+  }
+
+});
+
+
 let isDrawing = false; 
 let lastPoint = null;
 
@@ -339,8 +378,15 @@ controls.rotateSpeed *= -1;
 camera.position.set(0, 0, 5);
 controls.target.set(1, 0.5, 0);
 
+
+
+
+
+
+
 function animate() {
   requestAnimationFrame(animate);
+
   controls.update();
   renderer.render(scene, camera);
 }
