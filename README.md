@@ -51,7 +51,7 @@ This is an interactive 3D planetarium built using Three.js. Backend is written i
 - Use the trash icon to remove custom constellations.
 - Toggle the Earth icon to show/hide the ground!
 
-IMP: The server runs slow (free hosting, lol!) so it might take maybe even minutes to load. If it still doesn't refresh the tab, it loads faster at times.
+IMP: The free instance hosted on render spins down with inactivity, which can delay requests by 50 seconds or more. So please wait if it shows loading for too long!
 
 ---
 
