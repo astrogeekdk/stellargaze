@@ -2,9 +2,9 @@
 
 Created for NASA Space Apps PS - "Exosky", where we had to simulate how the night sky would look like from different exoplanets!
 
-This is an interactive 3D planetarium built using Three.js. Backend is written in Python Django. The star dataset is from the Hipparcos catalog and exoplanets from NASA Exoplanet Archive.
+This is an interactive 3D planetarium built using Three.js. Backend is written in Python Flask. The star dataset is from the Hipparcos catalog and exoplanets from NASA Exoplanet Archive.
 
-
+![Stellargaze](./stellargaze.png)
 
 ## Features
 
@@ -33,7 +33,7 @@ This is an interactive 3D planetarium built using Three.js. Backend is written i
 
 ## Tech Stack
 
-- **Backend**: Python, Django
+- **Backend**: Python, Flask
 - **Frontend**: Three.js (JavaScript), HTML, CSS
 - **Data Sources**: 
   - Hipparcos Catalog (stellar data)
